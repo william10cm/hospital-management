@@ -1,0 +1,98 @@
+.appointments-form-card {
+  background: white;
+  padding: 24px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.appointments-form-card h2 {
+  color: #1f4f8f;
+  margin-bottom: 16px;
+}
+
+.appointments-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.appointments-form input,
+.appointments-form select {
+  padding: 12px;
+  border: 1px solid #cfd8e3;
+  border-radius: 8px;
+}
+
+.appointments-form button {
+  grid-column: span 2;
+  padding: 12px;
+  background: #1f4f8f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+thead th {
+  text-align: left;
+  padding-left: 40px;
+  color: #1f4f8f;
+  font-weight: 700;
+  border-bottom: 2px solid #e5eaf0;
+}
+
+tbody td {
+  padding-right: 30px;
+  border-bottom: 1px solid #e5eaf0;
+  color: #333;
+}
+
+/* Add space between rows */
+tbody tr {
+  height: 60px;
+}
+
+/* Optional: zebra effect (looks nicer) */
+tbody tr:nth-child(even) {
+  background: #f8fbff;
+}
+
+.appointments-form button:hover {
+  background: #173c6d;
+}
+
+.status-select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #cfd8e3;
+}
+
+.delete-appointment-btn {
+  padding: 8px 12px;
+  background: #c62828;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-appointment-btn:hover {
+  background: #9f1f1f;
+}
+
+@media (max-width: 768px) {
+  .appointments-form {
+    grid-template-columns: 1fr;
+  }
+
+  .appointments-form button {
+    grid-column: span 1;
+  }
+}
