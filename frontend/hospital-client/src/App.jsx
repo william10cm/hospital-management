@@ -4,6 +4,7 @@ import DashboardPage from "./pages/DashboardPage";
 import PatientsPage from "./pages/PatientsPage";
 import DoctorsPage from "./pages/DoctorsPage";
 import AppointmentsPage from "./pages/AppointmentsPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
 function App() {
@@ -11,10 +12,42 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/patients" element={<PatientsPage />} />
-        <Route path="/doctors" element={<DoctorsPage />} />
-        <Route path="/appointments" element={<AppointmentsPage />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/patients"
+          element={
+            <ProtectedRoute>
+              <PatientsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/doctors"
+          element={
+            <ProtectedRoute>
+              <DoctorsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/appointments"
+          element={
+            <ProtectedRoute>
+              <AppointmentsPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

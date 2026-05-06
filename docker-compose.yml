@@ -1,0 +1,18 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: hospital-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build:
+      context: ./frontend/hospital-client
+    container_name: hospital-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend

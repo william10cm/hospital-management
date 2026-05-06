@@ -14,7 +14,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <Link to="/dashboard" className="navbar-logo">
-        HospitalMS
+        Hospital East Meadow
       </Link>
 
       <div className="navbar-links">

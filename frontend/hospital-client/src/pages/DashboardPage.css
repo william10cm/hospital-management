@@ -19,7 +19,8 @@
 
 .dashboard-header p {
   color: #555;
-  margin-bottom: 6px;
+  /* margin-bottom: 6px; */
+  padding-top: 25px;
 }
 
 .dashboard-grid {
