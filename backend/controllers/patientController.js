@@ -1,7 +1,17 @@
 const Patient = require("../models/Patient");
 
+function hasRole(user, roles) {
+  return roles.includes(user?.role);
+}
+
 // CREATE
 async function createPatient(req, res) {
+  if (!hasRole(req.user, ["admin", "receptionist"])) {
+    return res.status(403).json({
+      message: "You do not have permission to perform this action",
+    });
+  }
+
   try {
     const patient = await Patient.create(req.body);
     res.status(201).json(patient);
@@ -37,6 +47,12 @@ async function getPatientById(req, res) {
 
 // UPDATE
 async function updatePatient(req, res) {
+  if (!hasRole(req.user, ["admin"])) {
+    return res.status(403).json({
+      message: "You do not have permission to perform this action",
+    });
+  }
+
   try {
     const patient = await Patient.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -54,6 +70,12 @@ async function updatePatient(req, res) {
 
 // DELETE
 async function deletePatient(req, res) {
+  if (!hasRole(req.user, ["admin"])) {
+    return res.status(403).json({
+      message: "You do not have permission to perform this action",
+    });
+  }
+
   try {
     const patient = await Patient.findByIdAndDelete(req.params.id);
 

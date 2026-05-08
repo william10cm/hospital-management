@@ -2,6 +2,20 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
+const ALLOWED_ROLES = ["admin", "doctor", "receptionist"];
+const ROLE_ALIASES = {
+  receptioniist: "receptionist",
+};
+
+function normalizeRole(role) {
+  if (!role) {
+    return undefined;
+  }
+
+  const normalized = String(role).trim().toLowerCase();
+  return ROLE_ALIASES[normalized] || normalized;
+}
+
 function createToken(userId) {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
     expiresIn: "7d",
@@ -11,9 +25,16 @@ function createToken(userId) {
 async function register(req, res) {
   try {
     const { name, email, password, role } = req.body;
+    const normalizedRole = normalizeRole(role);
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "Name, email, and password are required" });
+    }
+
+    if (normalizedRole && !ALLOWED_ROLES.includes(normalizedRole)) {
+      return res.status(400).json({
+        message: "Invalid role. Allowed roles are admin, doctor, receptionist",
+      });
     }
 
     const existingUser = await User.findOne({ email });
@@ -28,7 +49,7 @@ async function register(req, res) {
       name,
       email,
       password: hashedPassword,
-      role,
+      role: normalizedRole,
     });
 
     const token = createToken(user._id);

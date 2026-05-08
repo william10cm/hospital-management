@@ -1,6 +1,16 @@
 const Appointment = require("../models/Appointment");
 
+function hasRole(user, roles) {
+  return roles.includes(user?.role);
+}
+
 async function createAppointment(req, res) {
+  if (!hasRole(req.user, ["admin"])) {
+    return res.status(403).json({
+      message: "You do not have permission to perform this action",
+    });
+  }
+
   try {
     const appointment = await Appointment.create(req.body);
     res.status(201).json(appointment);
@@ -41,6 +51,12 @@ async function getAppointmentById(req, res) {
 }
 
 async function updateAppointment(req, res) {
+  if (!hasRole(req.user, ["admin", "doctor", "receptionist"])) {
+    return res.status(403).json({
+      message: "You do not have permission to perform this action",
+    });
+  }
+
   try {
     const appointment = await Appointment.findByIdAndUpdate(
       req.params.id,
@@ -61,6 +77,12 @@ async function updateAppointment(req, res) {
 }
 
 async function deleteAppointment(req, res) {
+  if (!hasRole(req.user, ["admin"])) {
+    return res.status(403).json({
+      message: "You do not have permission to perform this action",
+    });
+  }
+
   try {
     const appointment = await Appointment.findByIdAndDelete(req.params.id);
 

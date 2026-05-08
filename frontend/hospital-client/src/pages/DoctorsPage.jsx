@@ -9,6 +9,9 @@ import {
 import "./DoctorsPage.css";
 
 function DoctorsPage() {
+  const user = JSON.parse(localStorage.getItem("hospitalUser") || "{}");
+  const isAdmin = user.role === "admin";
+
   const [doctors, setDoctors] = useState([]);
   const [error, setError] = useState("");
   const [editingId, setEditingId] = useState(null);
@@ -101,6 +104,7 @@ function DoctorsPage() {
 
       {error && <p className="doctors-error">{error}</p>}
 
+      {isAdmin && (
       <section className="doctors-form-card">
         <h2>{editingId ? "Update Doctor" : "Add Doctor"}</h2>
 
@@ -149,6 +153,7 @@ function DoctorsPage() {
           </button>
         </form>
       </section>
+      )}
 
       <section className="doctors-card">
         <table className="doctors-table">
@@ -159,7 +164,7 @@ function DoctorsPage() {
               <th>Phone</th>
               <th>Email</th>
               <th>Department</th>
-              <th>Actions</th>
+              {isAdmin && <th>Actions</th>}
             </tr>
           </thead>
 
@@ -171,6 +176,7 @@ function DoctorsPage() {
                 <td>{doctor.phone}</td>
                 <td>{doctor.email || "N/A"}</td>
                 <td>{doctor.department || "N/A"}</td>
+                {isAdmin && (
                 <td>
                   <button
                     type="button"
@@ -188,6 +194,7 @@ function DoctorsPage() {
                     Delete
                   </button>
                 </td>
+                )}
               </tr>
             ))}
           </tbody>

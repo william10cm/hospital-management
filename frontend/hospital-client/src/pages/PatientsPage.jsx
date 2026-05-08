@@ -9,6 +9,9 @@ import {
 } from "../api/api";
 
 function PatientsPage() {
+  const user = JSON.parse(localStorage.getItem("hospitalUser") || "{}");
+  const isAdmin = user.role === "admin";
+
   const [patients, setPatients] = useState([]);
   const [error, setError] = useState("");
   const [editingId, setEditingId] = useState(null);
@@ -109,7 +112,7 @@ function handleEdit(patient) {
       {error && <p className="patients-error">{error}</p>}
 
       <section className="patients-form-card">
-        <h2>Add Patient</h2>
+        <h2>{isAdmin && editingId ? "Edit Patient" : "Add Patient"}</h2>
 
         <form onSubmit={handleSubmit} className="patients-form">
             <input
@@ -170,7 +173,7 @@ function handleEdit(patient) {
               <th>Gender</th>
               <th>Phone</th>
               <th>Medical History</th>
-              <th>Actions</th>
+              {isAdmin && <th>Actions</th>}
             </tr>
           </thead>
 
@@ -182,6 +185,7 @@ function handleEdit(patient) {
                 <td>{patient.gender}</td>
                 <td>{patient.phone}</td>
                 <td>{patient.medicalHistory || "None"}</td>
+                {isAdmin && (
                 <td>
                     <button
                         type="button"
@@ -195,7 +199,8 @@ function handleEdit(patient) {
                         onClick={() => handleDelete(patient._id)} >
                         Delete
                     </button>
-                </td>                
+                </td>
+                )}                
               </tr>
             ))}            
           </tbody>          

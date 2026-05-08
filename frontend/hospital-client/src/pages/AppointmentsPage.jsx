@@ -11,6 +11,9 @@ import {
 } from "../api/api";
 
 function AppointmentsPage() {
+  const user = JSON.parse(localStorage.getItem("hospitalUser") || "{}");
+  const isAdmin = user.role === "admin";
+
   const [appointments, setAppointments] = useState([]);
   const [error, setError] = useState("");
   const [patients, setPatients] = useState([]);
@@ -100,6 +103,7 @@ async function handleDelete(id) {
 
       {error && <p className="error">{error}</p>}
 
+      {isAdmin && (
       <section className="appointments-form-card">
         <h2>Create Appointment</h2>
 
@@ -151,11 +155,11 @@ async function handleDelete(id) {
             <button type="submit">Create Appointment</button>
         </form>
       </section>
+      )}
 
       <table>
         <thead>
           <tr>
-            <th>Actions</th>
             <th>Patient</th>
             <th>Doctor</th>
             <th>Date</th>
@@ -182,6 +186,7 @@ async function handleDelete(id) {
                     <option value="cancelled">Cancelled</option>
                 </select>
               </td>
+              {isAdmin && (
               <td>
                 <button
                     className="delete-appointment-btn"
@@ -189,6 +194,7 @@ async function handleDelete(id) {
                     Delete
                 </button>
               </td>
+              )}
             </tr>
           ))}
         </tbody>
