@@ -1,24 +1,11 @@
 const Appointment = require("../models/Appointment");
 
-function hasRole(user, roles) {
-  return roles.includes(user?.role);
-}
-
 async function createAppointment(req, res) {
-  if (!hasRole(req.user, ["admin"])) {
-    return res.status(403).json({
-      message: "You do not have permission to perform this action",
-    });
-  }
-
   try {
     const appointment = await Appointment.create(req.body);
     res.status(201).json(appointment);
   } catch (error) {
-    res.status(500).json({
-      message: "Error creating appointment",
-      error: error.message,
-    });
+    res.status(500).json({ message: "Error creating appointment" });
   }
 }
 
@@ -26,7 +13,7 @@ async function getAppointments(req, res) {
   try {
     const appointments = await Appointment.find()
       .populate("patient", "name age gender phone")
-      .populate("doctor", "name specialization department");
+      .populate("doctor", "name email role");
 
     res.json(appointments);
   } catch (error) {
@@ -38,7 +25,7 @@ async function getAppointmentById(req, res) {
   try {
     const appointment = await Appointment.findById(req.params.id)
       .populate("patient", "name age gender phone")
-      .populate("doctor", "name specialization department");
+      .populate("doctor", "name email role");
 
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found" });
@@ -51,12 +38,6 @@ async function getAppointmentById(req, res) {
 }
 
 async function updateAppointment(req, res) {
-  if (!hasRole(req.user, ["admin", "doctor", "receptionist"])) {
-    return res.status(403).json({
-      message: "You do not have permission to perform this action",
-    });
-  }
-
   try {
     const appointment = await Appointment.findByIdAndUpdate(
       req.params.id,
@@ -64,7 +45,7 @@ async function updateAppointment(req, res) {
       { new: true }
     )
       .populate("patient", "name age gender phone")
-      .populate("doctor", "name specialization department");
+      .populate("doctor", "name email role");
 
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found" });
@@ -77,12 +58,6 @@ async function updateAppointment(req, res) {
 }
 
 async function deleteAppointment(req, res) {
-  if (!hasRole(req.user, ["admin"])) {
-    return res.status(403).json({
-      message: "You do not have permission to perform this action",
-    });
-  }
-
   try {
     const appointment = await Appointment.findByIdAndDelete(req.params.id);
 

@@ -19,13 +19,11 @@
 
 .dashboard-header p {
   color: #555;
-  /* margin-bottom: 6px; */
-  padding-top: 25px;
 }
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 18px;
 }
 

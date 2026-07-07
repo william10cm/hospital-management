@@ -26,6 +26,11 @@ const patientSchema = new mongoose.Schema(
     medicalHistory: {
       type: String,
     },
+    status: {
+      type: String,
+      enum: ["waiting", "in-treatment", "discharged"],
+      default: "waiting",
+    },
   },
   {
     timestamps: true,

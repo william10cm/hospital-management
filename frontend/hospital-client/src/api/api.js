@@ -1,4 +1,24 @@
-const API_BASE_URL = "https://hospital-management-xzxg.onrender.com/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://hospital-management-xzxg.onrender.com/api";
+
+export async function registerUser(userData) {
+  const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Registration failed");
+  }
+
+  return data;
+}
 
 export async function loginUser(email, password) {
   const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -13,6 +33,43 @@ export async function loginUser(email, password) {
 
   if (!response.ok) {
     throw new Error(data.message || "Login failed");
+  }
+
+  return data;
+}
+
+export async function getUsers() {
+  const token = localStorage.getItem("hospitalToken");
+
+  const response = await fetch(`${API_BASE_URL}/auth/users`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch users");
+  }
+
+  return data;
+}
+
+export async function deleteUser(userId) {
+  const token = localStorage.getItem("hospitalToken");
+
+  const response = await fetch(`${API_BASE_URL}/auth/users/${userId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to delete user");
   }
 
   return data;
@@ -92,6 +149,45 @@ export async function updatePatient(patientId, updatedData) {
 
   if (!response.ok) {
     throw new Error(data.message || "Failed to update patient");
+  }
+
+  return data;
+}
+
+export async function updatePatientStatus(patientId, status) {
+  const token = localStorage.getItem("hospitalToken");
+
+  const response = await fetch(`${API_BASE_URL}/patients/${patientId}/status`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ status }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update patient status");
+  }
+
+  return data;
+}
+
+export async function getDoctorUsers() {
+  const token = localStorage.getItem("hospitalToken");
+
+  const response = await fetch(`${API_BASE_URL}/auth/doctors`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch doctors");
   }
 
   return data;
@@ -179,22 +275,25 @@ export async function deleteDoctor(doctorId) {
 export async function getAppointments() {
   const token = localStorage.getItem("hospitalToken");
 
-  const res = await fetch(`${API_BASE_URL}/appointments`, {
+  const response = await fetch(`${API_BASE_URL}/appointments`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  const data = await res.json();
+  const data = await response.json();
 
-  if (!res.ok) throw new Error(data.message);
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch appointments");
+  }
+
   return data;
 }
 
 export async function createAppointment(appointmentData) {
   const token = localStorage.getItem("hospitalToken");
 
-  const res = await fetch(`${API_BASE_URL}/appointments`, {
+  const response = await fetch(`${API_BASE_URL}/appointments`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -203,42 +302,51 @@ export async function createAppointment(appointmentData) {
     body: JSON.stringify(appointmentData),
   });
 
-  const data = await res.json();
+  const data = await response.json();
 
-  if (!res.ok) throw new Error(data.message);
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to create appointment");
+  }
+
   return data;
 }
 
-export async function updateAppointment(id, dataToUpdate) {
+export async function updateAppointment(id, updatedData) {
   const token = localStorage.getItem("hospitalToken");
 
-  const res = await fetch(`${API_BASE_URL}/appointments/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/appointments/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(dataToUpdate),
+    body: JSON.stringify(updatedData),
   });
 
-  const data = await res.json();
+  const data = await response.json();
 
-  if (!res.ok) throw new Error(data.message);
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update appointment");
+  }
+
   return data;
 }
 
 export async function deleteAppointment(id) {
   const token = localStorage.getItem("hospitalToken");
 
-  const res = await fetch(`${API_BASE_URL}/appointments/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/appointments/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  const data = await res.json();
+  const data = await response.json();
 
-  if (!res.ok) throw new Error(data.message);
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to delete appointment");
+  }
+
   return data;
 }

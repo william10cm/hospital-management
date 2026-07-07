@@ -7,9 +7,11 @@ const appointmentSchema = new mongoose.Schema(
       ref: "Patient",
       required: true,
     },
+    // Appointments link to User accounts (not Doctor profiles) so the assigned
+    // doctor must be a logged-in staff member with the "doctor" role.
     doctor: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Doctor",
+      ref: "User",
       required: true,
     },
     appointmentDate: {

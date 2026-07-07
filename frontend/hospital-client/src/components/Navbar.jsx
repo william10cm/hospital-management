@@ -3,7 +3,8 @@ import "./Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("hospitalUser"));
+  const user = JSON.parse(localStorage.getItem("hospitalUser") || "{}");
+  const isAdmin = user?.role === "admin";
 
   function handleLogout() {
     localStorage.removeItem("hospitalToken");
@@ -20,7 +21,7 @@ function Navbar() {
       <div className="navbar-links">
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/patients">Patients</Link>
-        <Link to="/doctors">Doctors</Link>
+        {isAdmin && <Link to="/employees">Employees</Link>}
         <Link to="/appointments">Appointments</Link>
       </div>
 

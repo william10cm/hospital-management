@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { loginUser } from "../api/api";
 import "./LoginPage.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [email, setEmail] = useState("admin@test.com");
@@ -49,6 +49,10 @@ function LoginPage() {
 
           <button type="submit">Login</button>
         </form>
+
+        <p className="login-link-row">
+          Need a receptionist account? <Link to="/register">Register here</Link>
+        </p>
       </section>
     </main>
   );
