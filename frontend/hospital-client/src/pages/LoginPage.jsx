@@ -4,8 +4,8 @@ import "./LoginPage.css";
 import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
-  const [email, setEmail] = useState("admin@test.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ function LoginPage() {
         </form>
 
         <p className="login-link-row">
-          Need a receptionist account? <Link to="/register">Register here</Link>
+          Need an account? <Link to="/register">Register here</Link>
         </p>
       </section>
     </main>

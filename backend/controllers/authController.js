@@ -2,7 +2,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-const ALLOWED_ROLES = ["admin", "doctor", "receptionist"];
+// Roles a visitor may pick when registering themselves.
+// "admin" is intentionally excluded — it can only be granted by an existing admin.
+const SELF_SIGNUP_ROLES = ["doctor", "receptionist"];
 
 function createToken(userId) {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
@@ -18,11 +20,17 @@ async function register(req, res) {
       return res.status(400).json({ message: "Name, email, and password are required" });
     }
 
-    const userRole = role?.trim().toLowerCase();
+    const userRole = role?.trim().toLowerCase() || "receptionist";
 
-    if (userRole && !ALLOWED_ROLES.includes(userRole)) {
+    if (userRole === "admin") {
+      return res.status(403).json({
+        message: "Admin accounts can only be created by an existing administrator.",
+      });
+    }
+
+    if (!SELF_SIGNUP_ROLES.includes(userRole)) {
       return res.status(400).json({
-        message: "Invalid role. Allowed roles are admin, doctor, receptionist",
+        message: "Invalid role. Allowed roles are doctor and receptionist.",
       });
     }
 

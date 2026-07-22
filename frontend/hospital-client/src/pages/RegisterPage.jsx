@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../api/api";
 import "./LoginPage.css";
 
-const ROLE_OPTIONS = ["admin", "doctor", "receptionist"];
+const ROLE_OPTIONS = ["doctor", "receptionist"];
 
 function RegisterPage() {
   const [name, setName] = useState("");
